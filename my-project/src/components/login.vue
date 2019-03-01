@@ -131,7 +131,7 @@ export default {
                 message: res.data.msg,
                 type: "success"
               });
-              this.$router.push({name: 'home'})
+              this.$router.push({name: 'main'})
             }else {
               this.$message({
                 message: res.data.errMsg,
@@ -154,7 +154,7 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     }
-    
+
   }
 }
 </script>
