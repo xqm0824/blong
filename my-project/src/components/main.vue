@@ -14,17 +14,19 @@
       </div>
       <!-- 登录注册 -->
       <div class="reg-and-login">
-        <el-button type="text">登录</el-button>
-        <el-button type="text">注册</el-button>
+        <el-button type="text" @click="login">登录</el-button>
+        <el-button type="text" @click="reg">>注册</el-button>
       </div>
     </div>
-
+    <!-- 对话框 -->
+    <LoginAndReg ref="model"></LoginAndReg>
     <!-- 主体 -->
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+  import LoginAndReg from "./login-and-reg.vue";
   export default {
     data() {
       return {
@@ -35,7 +37,16 @@
     methods: {
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
+      },
+      login() {
+        this.$refs.model.init(0);
+      },
+      reg(){
+        this.$refs.model.init(1);
       }
+    },
+    components: {
+      LoginAndReg
     }
   }
 </script>

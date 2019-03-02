@@ -38,7 +38,20 @@
             </div>
           </div>
         </el-col>
-        <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
+        <el-col :span="6">
+          <div class="grid-content bg-purple">
+            <div class="gonggao">
+              <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                  <span>卡片名称</span>
+                </div>
+                <div v-for="o in 4" :key="o" class="text item">
+                  {{'列表内容 ' + o }}
+                </div>
+              </el-card>
+            </div>
+          </div>
+        </el-col>
       </el-row>
     </div>
   </div>
