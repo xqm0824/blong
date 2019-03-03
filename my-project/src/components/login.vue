@@ -53,6 +53,8 @@
 
 <script>
 import axios from "axios";
+import { login } from "@/api/user.js";
+import { mapState, mapMutations } from "vuex";
 export default {
   name: 'login',
   props: ["valueNum"],
@@ -104,35 +106,40 @@ export default {
       },
       rules1: {
         pass: [{ validator: validatePass, trigger: "blur" }]
-        // username: [{ validator: checkAge, trigger: "blur" }]
       },
       rules2: {
         pass: [{ validator: validatePass, trigger: "blur" }],
         checkPass: [{ validator: validatePass2, trigger: "blur" }],
-        // age: [{ validator: checkAge, trigger: "blur" }]
         username: [{ required: true, trigger: "blur" }]
       },
       activeName: "login"
     };
   },
   methods: {
+    ...mapMutations({
+      setUsername: "setUsername",
+      setLogin: "setLogin"
+    }),
     handleClick(tab, event) {
 
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          axios.post('/proxyApi/user/login',{
+          login({
             username: this.ruleForm1.username,
             password: this.ruleForm1.pass
           })
           .then(res => {
             if(res.data.code === 1){
+                this.setUsername(this.ruleForm1.username);
+                this.setLogin(true);
               this.$message({
                 message: res.data.msg,
                 type: "success"
               });
               this.$router.push({name: 'main'})
+              this.$emit("closeModel")
             }else {
               this.$message({
                 message: res.data.errMsg,
@@ -141,6 +148,7 @@ export default {
             }
           })
           .catch(err => {
+            console.log(err)
             this.$message({
               message: "服务器错误",
               type: "error"
@@ -155,7 +163,6 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     }
-
   },
   watch: {
     valueNum(Nval,Oval) {
@@ -169,7 +176,7 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+
 <style scoped lang="scss">
   .login {
     margin: 0 auto;

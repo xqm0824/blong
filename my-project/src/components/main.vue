@@ -13,20 +13,36 @@
         </el-menu>
       </div>
       <!-- 登录注册 -->
-      <div class="reg-and-login">
-        <el-button type="text" @click="login">登录</el-button>
-        <el-button type="text" @click="reg">>注册</el-button>
+      <div class="reg-and-login" >
+        <div class="user-info" v-if="hasLogin">
+          <el-button type="text" >个人中心</el-button>
+          <el-dropdown @command="logout">
+            <span class="avatar-wrap">
+              <img width="40" height="40" src="../assets/logo.png">
+              <span>admin</span>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>退出用户</el-dropdown-item>
+            </el-dropdown-menu>
+
+          </el-dropdown>
+        </div>
+        <div v-else>
+          <el-button type="text" @click="login">登录</el-button>
+          <el-button type="text" @click="reg">注册</el-button>
+        </div>
       </div>
     </div>
     <!-- 对话框 -->
     <LoginAndReg ref="model"></LoginAndReg>
-    <!-- 主体 -->
+    <!-- home -->
     <router-view></router-view>
   </div>
 </template>
 
 <script>
   import LoginAndReg from "./login-and-reg.vue";
+  import { mapState, mapMutations } from "vuex";
   export default {
     data() {
       return {
@@ -34,7 +50,16 @@
         activeIndex2: '1'
       };
     },
+    computed: {
+      ...mapState({
+        username: state => state.username,
+        hasLogin: state => state.hasLogin
+      })
+    },
     methods: {
+      ...mapMutations({
+        setLogout: "setLogout"
+      }),
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
       },
@@ -43,6 +68,9 @@
       },
       reg(){
         this.$refs.model.init(1);
+      },
+      logout() {
+        this.setLogout()
       }
     },
     components: {
@@ -58,5 +86,21 @@
     align-items: center;
     padding: 0 200px;
     background-color: #fff;
+    .reg-and-login {
+      .user-info {
+        display: flex;
+        .el-button {
+          margin-right: 20px;
+        }
+        .avatar-wrap {
+          display: flex;
+          align-items: center;
+          span {
+            font-size: 14px;
+            color: #606266;
+          }
+        }
+      }
+    }
   }
 </style>

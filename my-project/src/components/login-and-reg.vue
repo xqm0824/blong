@@ -1,7 +1,7 @@
 <template>
   <el-dialog
   :visible.sync="dialogVisible" width="30%" center>
-    <Login :valueNum = "valueNum"></Login>
+    <Login @closeModel="closeModel" :valueNum = "valueNum"></Login>
   </el-dialog>
 </template>
 <script >
