@@ -33,7 +33,7 @@
         </div>
       </div>
     </div>
-    <!-- 对话框 -->
+    <!-- 登录 and 注册 弹窗 -->
     <LoginAndReg ref="model"></LoginAndReg>
     <!-- home -->
     <router-view></router-view>

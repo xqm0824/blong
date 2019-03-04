@@ -53,7 +53,7 @@
 
 <script>
 import axios from "axios";
-import { login } from "@/api/user.js";
+import { login,reg } from "@/api/user.js";
 import { mapState, mapMutations } from "vuex";
 export default {
   name: 'login',
@@ -126,34 +126,48 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          login({
-            username: this.ruleForm1.username,
-            password: this.ruleForm1.pass
-          })
-          .then(res => {
-            if(res.data.code === 1){
-                this.setUsername(this.ruleForm1.username);
-                this.setLogin(true);
+          if( formName === "ruleForm1"){
+            login({
+              username: this.ruleForm1.username,
+              password: this.ruleForm1.pass
+            })
+            .then(res => {
+              if(res.data.status === "success"){
+                  this.setUsername(this.ruleForm1.username);
+                  this.setLogin(true);
+                this.$message({
+                  message: res.data.data,
+                  type: "success"
+                });
+                this.$router.push({name: 'main'})
+                this.$emit("closeModel")
+              }else {
+                this.$message({
+                  message: res.data.data,
+                  type: "error"
+                });
+              }
+            })
+            .catch(err => {
+              console.log(err)
               this.$message({
-                message: res.data.msg,
-                type: "success"
-              });
-              this.$router.push({name: 'main'})
-              this.$emit("closeModel")
-            }else {
-              this.$message({
-                message: res.data.errMsg,
+                message: "服务器错误",
                 type: "error"
               });
-            }
-          })
-          .catch(err => {
-            console.log(err)
-            this.$message({
-              message: "服务器错误",
-              type: "error"
-            });
-          })
+            })
+          }else {
+            reg({
+              username: this.ruleForm2.username,
+              password: this.ruleForm2.pass
+            })
+            .then(res => {
+              this.$message({
+                  message: res.data.data,
+                  type: "success"
+              });
+              this.activeName = "login"
+            })
+          }
         } else {
           console.log('error submit!!');
           return false;
