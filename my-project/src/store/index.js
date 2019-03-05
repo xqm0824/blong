@@ -6,7 +6,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     username: Cookies.get("username"),
-    hasLogin: Cookies.get("username")
+    hasLogin: Cookies.get("username"),
+    info: Cookies.get("userinfo"),
   },
   mutations: {
     setUsername(state, val) {
@@ -20,6 +21,10 @@ const store = new Vuex.Store({
       clearLoginInfo()
       state.hasLogin = false
       state.username = ''
+    },
+    setInfo(state,val) {
+      Cookies.set("userinfo", val);
+      state.info = val
     }
   }
 })

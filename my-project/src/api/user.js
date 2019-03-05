@@ -14,3 +14,10 @@ export const reg = (param) => {
     data: param
   })
 }
+
+export const info = () => {
+  return http({
+    method: "get",
+    url: http.adornUrl("/user/info")
+  })
+}

@@ -53,7 +53,7 @@
 
 <script>
 import axios from "axios";
-import { login,reg } from "@/api/user.js";
+import { login,reg,info } from "@/api/user.js";
 import { mapState, mapMutations } from "vuex";
 export default {
   name: 'login',
@@ -112,13 +112,15 @@ export default {
         checkPass: [{ validator: validatePass2, trigger: "blur" }],
         username: [{ required: true, trigger: "blur" }]
       },
+      userInfo: "",
       activeName: "login"
     };
   },
   methods: {
     ...mapMutations({
       setUsername: "setUsername",
-      setLogin: "setLogin"
+      setLogin: "setLogin",
+      setInfo: "setInfo"
     }),
     handleClick(tab, event) {
 
@@ -135,6 +137,12 @@ export default {
               if(res.data.status === "success"){
                   this.setUsername(this.ruleForm1.username);
                   this.setLogin(true);
+                  info().then(res => {
+                    if(res.data.status === "success"){
+                      this.userInfo = res.data.data.avatar;
+                      this.setInfo(this.userInfo)
+                    }
+                  })
                 this.$message({
                   message: res.data.data,
                   type: "success"
