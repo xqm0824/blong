@@ -3,10 +3,13 @@ import Router from 'vue-router'
 import Login from '@/components/login'
 import Main from '@/components/main'
 import Home from '@/components/home'
+import store from '@/store/index.js'
+import ArticleDetail from '@/components/article-detail'
+import Comments from "@/components/comments"
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -18,7 +21,13 @@ export default new Router({
           path: "/home",
           name: 'home',
           component: Home
-        }
+        },
+        {
+          path: '/article-detail',
+          name: 'article-detail',
+          component: ArticleDetail
+        },
+
       ]
     },
     {
@@ -28,3 +37,16 @@ export default new Router({
     },
   ]
 })
+
+
+router.beforeEach((to, from, next) => {
+  if (to.path === "/home") {
+    next()
+  }
+  if (store.state.hasLogin) {
+      next()
+  } else {
+    next()
+  }
+})
+export default router

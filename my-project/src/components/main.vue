@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="main">
     <div class="header-wrap">
       <!-- 头部导航 -->
       <div class="nav">
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-          <el-menu-item index="1">首页</el-menu-item>
+          <el-menu-item index="1" >首页</el-menu-item>
           <el-menu-item index="2">Web</el-menu-item>
           <el-menu-item index="3">大数据</el-menu-item>
           <el-menu-item index="4">Java</el-menu-item>
@@ -33,10 +33,37 @@
         </div>
       </div>
     </div>
+    <!-- 发表评论 -->
+    <div class="publish-article" >
+      <el-button type="primary" v-if="$route.name === 'home' "> 发表文章</el-button>
+    </div>
     <!-- 登录 and 注册 弹窗 -->
     <LoginAndReg ref="model"></LoginAndReg>
     <!-- home -->
-    <router-view></router-view>
+    <div class="content">
+      <el-row :gutter="20">
+        <el-col :span="18">
+          <div class="grid-content bg-purple">
+            <router-view></router-view>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div class="grid-content bg-purple">
+            <div class="gonggao">
+              <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                  <span>卡片名称</span>
+                </div>
+                <div v-for="o in 4" :key="o" class="text item">
+                  {{'列表内容 ' + o }}
+                </div>
+              </el-card>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+
   </div>
 </template>
 
@@ -63,6 +90,9 @@
       }),
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
+        this.$router.push({
+          name: "home"
+        })
       },
       login() {
         this.$refs.model.init(0);
@@ -83,28 +113,34 @@
   }
 </script>
 
-<style lang="scss" scoped>
-  .header-wrap {
+<style lang="scss">
+.main {
+  & > .header-wrap {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 200px;
-    background-color: #fff;
-    .reg-and-login {
-      .user-info {
+    background: #fff;
+    .user-info {
+      display: flex;
+      .el-button {
+        margin-right: 20px;
+      }
+      .avatar-wrap {
         display: flex;
-        .el-button {
-          margin-right: 20px;
-        }
-        .avatar-wrap {
-          display: flex;
-          align-items: center;
-          span {
-            font-size: 14px;
-            color: #606266;
-          }
-        }
+        align-items: center;
       }
     }
   }
+  & > .publish-article {
+    text-align: right;
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 0 200px;
+  }
+  & > .content {
+    padding: 0 200px;
+    margin-bottom: 20px;
+  }
+}
 </style>
