@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '@/components/login'
+
 import Main from '@/components/main'
 import Home from '@/components/home'
 import store from '@/store/index.js'
 import ArticleDetail from '@/components/article-detail'
-import Comments from "@/components/comments"
+import PublishArticle from "@/components/publish-article"
+
+
 
 Vue.use(Router)
 
@@ -27,14 +29,13 @@ const router = new Router({
           name: 'article-detail',
           component: ArticleDetail
         },
-
+        {
+          path: '/publish-article',
+          name: 'publish-article',
+          component: PublishArticle
+        },
       ]
-    },
-    {
-      path: '/home',
-      name: 'home',
-      component: Home
-    },
+    }
   ]
 })
 

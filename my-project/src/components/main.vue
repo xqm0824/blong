@@ -35,19 +35,19 @@
     </div>
     <!-- 发表评论 -->
     <div class="publish-article" >
-      <el-button type="primary" v-if="$route.name === 'home' "> 发表文章</el-button>
+      <el-button type="primary" v-if="$route.name === 'home' " @click="publishArticle"> 发表文章</el-button>
     </div>
     <!-- 登录 and 注册 弹窗 -->
     <LoginAndReg ref="model"></LoginAndReg>
     <!-- home -->
     <div class="content">
       <el-row :gutter="20">
-        <el-col :span="18">
+        <el-col :span=spanVal>
           <div class="grid-content bg-purple">
             <router-view></router-view>
           </div>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="6" v-if="spanVal!=24">
           <div class="grid-content bg-purple">
             <div class="gonggao">
               <el-card class="box-card">
@@ -74,7 +74,8 @@
     data() {
       return {
         activeIndex: '1',
-        activeIndex2: '1'
+        activeIndex2: '1',
+        spanVal: 18
       };
     },
     computed: {
@@ -83,6 +84,9 @@
         hasLogin: state => state.hasLogin,
         info: state => state.info,
       })
+    },
+    mounted() {
+      this.getRoute();
     },
     methods: {
       ...mapMutations({
@@ -105,6 +109,18 @@
       },
       changeImage(val) {
         return process.env.ROOT + val
+      },
+      publishArticle(){
+        this.$router.push({
+          name: "publish-article"
+        })
+      },
+      getRoute() {
+        if (this.$route.name == "publish-article") {
+          this.spanVal = 24;
+        } else {
+          this.spanVal = 18;
+        }
       }
     },
     components: {
