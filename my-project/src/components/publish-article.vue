@@ -34,7 +34,8 @@
 </template>
 
 <script>
- import Tinymce from "@/components/Tinymce"; 
+ import Tinymce from "@/components/Tinymce";
+ import{ publishArticle }  from "@/api/data"
   export default {
   data() {
     return {
@@ -67,14 +68,41 @@
     components: { Tinymce },
    methods:{
     publish(){
-      this.$refs.formInline.validate((valid) => {
+      if(this.content){
+        this.$refs.formInline.validate((valid) => {
         if (valid) {
-          alert('发布成功');
+          let data ={
+            content: this.content,
+            tips: this.formInline.type,
+            title:this.formInline.title
+          };
+          publishArticle(data).then(res => {
+            if(res.data.status == 1){
+              this.$message({
+                message: "发表成功",
+                type: "success"
+              });
+              this.$router.push({
+                name: "home"
+              })
+            }else {
+              this.$message({
+                message: "发表文章失败",
+                type: "error"
+              });
+            }
+          }) 
         } else {
-          console.log('error submit!!');
+          console.log("error submit!!");
           return false;
         }
       });
+      }else {
+        this.$message({
+          message: "请输入要发表的内容",
+          type: "error"
+        });
+      }
     }
   }
 }
@@ -93,6 +121,9 @@
           }
         }
       }
+    }
+    .btn-wrap {
+      margin-top: 10px;
     }
   }
 </style>

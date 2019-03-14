@@ -3,7 +3,8 @@
     <div class="header-wrap">
       <!-- 头部导航 -->
       <div class="nav">
-        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+        <el-menu :default-active="activeIndex" class="el-menu-demo" 
+        mode="horizontal" @select="handleSelect">
           <el-menu-item index="1" >首页</el-menu-item>
           <el-menu-item index="2">Web</el-menu-item>
           <el-menu-item index="3">大数据</el-menu-item>
@@ -15,11 +16,11 @@
       <!-- 登录注册 -->
       <div class="reg-and-login" >
         <div class="user-info" v-if="hasLogin">
-          <el-button type="text" >个人中心</el-button>
+          <el-button type="text" @click="goPersonal">个人中心</el-button>
           <el-dropdown @command="logout">
             <span class="avatar-wrap">
               <img width="40" height="40" :src=changeImage(info)>
-              <span>admin</span>
+              <span>{{username}}</span>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>退出用户</el-dropdown-item>
@@ -33,7 +34,7 @@
         </div>
       </div>
     </div>
-    <!-- 发表评论 -->
+    <!-- 发表文章 -->
     <div class="publish-article" >
       <el-button type="primary" v-if="$route.name === 'home' " @click="publishArticle"> 发表文章</el-button>
     </div>
@@ -42,7 +43,7 @@
     <!-- home -->
     <div class="content">
       <el-row :gutter="20">
-        <el-col :span=spanVal>
+        <el-col :span="spanVal">
           <div class="grid-content bg-purple">
             <router-view></router-view>
           </div>
@@ -74,7 +75,6 @@
     data() {
       return {
         activeIndex: '1',
-        activeIndex2: '1',
         spanVal: 18
       };
     },
@@ -93,7 +93,6 @@
         setLogout: "setLogout"
       }),
       handleSelect(key, keyPath) {
-        console.log(key, keyPath);
         this.$router.push({
           name: "home"
         })
@@ -110,17 +109,30 @@
       changeImage(val) {
         return process.env.ROOT + val
       },
-      publishArticle(){
+      publishArticle() {
         this.$router.push({
           name: "publish-article"
-        })
+        });
       },
       getRoute() {
-        if (this.$route.name == "publish-article") {
+        if (
+          this.$route.name == "publish-article" ||
+          this.$route.meta.tipShow == false
+        ) {
           this.spanVal = 24;
         } else {
           this.spanVal = 18;
         }
+      },
+      goPersonal(){
+        this.$router.push({
+          name: "user"
+        })
+      }
+    },
+    watch: {
+      $route() {
+        this.getRoute();
       }
     },
     components: {

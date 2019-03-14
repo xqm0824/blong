@@ -2,11 +2,11 @@
   <div class="article-wrap">
     <!-- 文章详情 -->
     <div class="article-detail">
-        <h2>{{ contentDetail.title }}</h2>
+        <h2 class="title">{{ contentDetail.title }}</h2>
         <div class="sub-title" v-if="JSON.stringify(contentDetail) != '{}'">
           <span>{{contentDetail.author.username}}</span>
-          <span>发表于:{{ changeTime(contentDetail.created) }}</span>
-          <span>分类:{{ contentDetail.tips }}</span>
+          <span>发表于 : {{ changeTime(contentDetail.created) }}</span>
+          <span>分类 : {{ contentDetail.tips }}</span>
         </div>
         <div class="content" v-html="contentDetail.content"></div>
     </div>
@@ -51,17 +51,22 @@
       padding: 10px;
       max-height: calc(100vh - 300px);
       overflow: auto;
-      & > h2 {
+      & > .title {
         text-align: center;
-        padding: 10px ;
+        font-size: 32px;
+        font-weight: 400;
+        line-height: 60px;
       }
       .sub-title {
         text-align: center;
         color: gray;
-        font-size: 12px; 
+        font-size: 16px; 
         & > span {
           margin-right: 10px;
         }
+      }
+      .content {
+        padding: 30px;
       }
     }
   }

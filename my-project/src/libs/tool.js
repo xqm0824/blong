@@ -11,3 +11,7 @@ export const hasLogin = () => {
     return false
   }
 }
+
+export const changeImg = (url) => {
+  return process.env.ROOT + url;
+}

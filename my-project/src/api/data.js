@@ -20,3 +20,13 @@ export const publishComment = (data) => {
     data
   })
 }
+
+
+
+export const publishArticle = (data) => {
+  return http({
+    method: 'post',
+    url: http.adornUrl('article'),
+    data
+  })
+}
