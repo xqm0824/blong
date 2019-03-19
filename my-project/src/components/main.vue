@@ -19,7 +19,7 @@
           <el-button type="text" @click="goPersonal">个人中心</el-button>
           <el-dropdown @command="logout">
             <span class="avatar-wrap">
-              <img width="40" height="40" :src=changeImage(info)>
+              <img width="40" height="40" :src=changeImage(avatar)>
               <span>{{username}}</span>
             </span>
             <el-dropdown-menu slot="dropdown">
@@ -41,7 +41,7 @@
     <!-- 登录 and 注册 弹窗 -->
     <LoginAndReg ref="model"></LoginAndReg>
     <!-- home -->
-    <div class="content">
+    <div :class="{content:hasPadding}">
       <el-row :gutter="20">
         <el-col :span="spanVal">
           <div class="grid-content bg-purple">
@@ -75,14 +75,15 @@
     data() {
       return {
         activeIndex: '1',
-        spanVal: 18
+        spanVal: 18,
+        hasPadding: true
       };
     },
     computed: {
       ...mapState({
         username: state => state.username,
         hasLogin: state => state.hasLogin,
-        info: state => state.info,
+        avatar: state => state.avatar
       })
     },
     mounted() {
@@ -115,6 +116,11 @@
         });
       },
       getRoute() {
+        if(this.$route.meta.tipShow == false){
+          this.hasPadding = false;
+        }else {
+          this.hasPadding = true
+        }
         if (
           this.$route.name == "publish-article" ||
           this.$route.meta.tipShow == false

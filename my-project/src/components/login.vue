@@ -53,8 +53,8 @@
 
 <script>
 import axios from "axios";
-import { login,reg,info } from "@/api/user.js";
-import { mapState, mapMutations } from "vuex";
+import { login,reg } from "@/api/user.js";
+import { mapState, mapMutations,mapActions } from "vuex";
 export default {
   name: 'login',
   props: ["valueNum"],
@@ -120,7 +120,9 @@ export default {
     ...mapMutations({
       setUsername: "setUsername",
       setLogin: "setLogin",
-      setInfo: "setInfo"
+    }),
+    ...mapActions({ 
+      handleInfo: "handleInfo" 
     }),
     handleClick(tab, event) {
 
@@ -137,12 +139,9 @@ export default {
               if(res.data.status === "success"){
                   this.setUsername(this.ruleForm1.username);
                   this.setLogin(true);
-                  info().then(res => {
-                    if(res.data.status === "success"){
-                      this.userInfo = res.data.data.avatar;
-                      this.setInfo(this.userInfo)
-                    }
-                  })
+                  this.handleInfo().then(res => {
+                    console.log(res);
+                  });
                 this.$message({
                   message: res.data.data,
                   type: "success"

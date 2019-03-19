@@ -85,10 +85,18 @@ router.beforeEach((to, from, next) => {
   if (to.path === "/home") {
     next()
   }
-  if (store.state.hasLogin) {
+  if(store.state.username){
+    if (store.state.hasLogin) {
       next()
-  } else {
-    next()
+    } else {
+      store.dispatch('handleInfo').then(res => {
+        next()
+      })
+    }
+  }else {
+    next({
+      name: "home"
+    })
   }
 })
 export default router
